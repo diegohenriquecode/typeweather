@@ -106,3 +106,6 @@ docker run -p 5173:80 type-weather:latest
 ```bash
 npm test
 ```
+
+## Página do projeto publicado, visite:
+https://typeweather-test.netlify.app/
