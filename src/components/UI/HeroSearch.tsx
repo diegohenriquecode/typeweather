@@ -6,7 +6,6 @@ import { getAddress } from '@/services/cepService';
 import { useState } from 'react';
 import Spinner from '@/components/UI/Spinner';
 import { Toast } from '@/components/UI/Toast';
-import { useSearchHistory } from "@/hooks/useSearchHistory";
 
 const schema = z.object({
   cep: z.string().min(8, 'Informe 8 dígitos'),
@@ -32,7 +31,6 @@ export default function HeroSearch({ onResolved, variant = 'default' }: Props) {
     const v = maskCEP(e.target.value);
     setValue('cep', v, { shouldValidate: true });
   }
-  const { add } = useSearchHistory(10);
 
   async function onSubmit(values: { cep: string }) {
     setError(null);
@@ -45,14 +43,6 @@ export default function HeroSearch({ onResolved, variant = 'default' }: Props) {
       setLoading(true);
       const addr = await getAddress(raw);
       onResolved({ cidade: addr.cidade!, uf: addr.uf!, lat: addr.lat, lon: addr.lon });
-      add({
-        cep: raw,
-        cidade: addr.cidade!,
-        uf: addr.uf!,
-        lat: addr.lat,
-        lon: addr.lon,
-        ts: Date.now(),
-      });
     } catch (e: any) {
       setError(e?.message || 'Erro ao consultar CEP');
     } finally {

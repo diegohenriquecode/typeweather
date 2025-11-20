@@ -21,12 +21,15 @@ export default function History() {
   const handleOpen = (i: number) => {
     const it = items[i];
     if (!it) return;
+
     const label = `${it.cidade}/${it.uf}`;
-    navigate(
-      `/dashboard?lat=${it.lat ?? ""}&lon=${it.lon ?? ""}&label=${encodeURIComponent(
-        label
-      )}`,
-    );
+    const params = new URLSearchParams();
+    if (it.lat != null) params.set("lat", String(it.lat));
+    if (it.lon != null) params.set("lon", String(it.lon));
+    params.set("label", encodeURIComponent(label));
+    params.set("cep", it.cep);
+
+    navigate(`/dashboard?${params.toString()}`);
   };
 
   return (

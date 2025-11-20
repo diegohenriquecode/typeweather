@@ -101,6 +101,11 @@ docker build -t typeweather .
 docker run -p 5173:80 type-weather:latest
 ```
 
+### **2) Docker compose**
+```bash
+docker compose up --build
+```
+
 ## Testes
 ### **1) Rodar suit de testes**
 ```bash

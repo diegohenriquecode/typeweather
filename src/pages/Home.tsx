@@ -1,7 +1,7 @@
-import HeroSearch from "@/components/UI/HeroSearch";
 import { geocodeCityUF } from "@/services/geocodingService";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
+import CepForm from "@/components/CepForm";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ export default function Home() {
             </p>
 
             <div className="mt-6 sm:mt-10">
-              <HeroSearch onResolved={handleResolved} />
+              <CepForm onResolved={handleResolved} />
             </div>
           </motion.div>
         </div>

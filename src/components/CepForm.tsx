@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { maskCEP } from '@/utils/cep';
 import Card from '@/components/UI/Card';
 import Spinner from '@/components/UI/Spinner';
-import { Toast } from '@/components/UI/Toast';
 import { useCepLookup } from '@/hooks/useCepLookup';
 import { useHistory } from '@/hooks/useHistory';
 
@@ -16,7 +15,7 @@ type Form = { cep: string };
 
 export default function CepForm({ onResolved }: { onResolved: (a: any) => void }) {
   const { register, watch, setValue } = useForm<Form>({ resolver: zodResolver(schema) });
-  const { input, setInput, masked, isValid, loading, error, address, clear } = useCepLookup();
+  const {setInput, isValid, loading, error, address, clear } = useCepLookup();
   const { add, clear: clearHistory } = useHistory();
 
   const cepWatch = watch('cep');
@@ -30,13 +29,21 @@ export default function CepForm({ onResolved }: { onResolved: (a: any) => void }
   function handleUseAddress() {
     if (!address) return;
     onResolved(address);
-    add({ cep: address.cep, cityUF: `${address.cidade}/${address.uf}`, timestamp: new Date().toISOString(), lat: address.lat, lon: address.lon });
+    add({
+      cep: address.cep,
+      cidade: address.cidade ?? '-',
+      uf: address.uf ?? '-',
+      ts: Date.now(),
+      lat: address.lat,
+      lon: address.lon,
+    });
     clear();
     setValue('cep', '');
   }
 
+
   return (
-    <Card>
+    <Card className='bg-red-600'>
       <div className="flex flex-col gap-3">
         <label htmlFor="cep" className="text-sm font-medium">CEP</label>
         <div className="flex gap-2">
@@ -65,7 +72,7 @@ export default function CepForm({ onResolved }: { onResolved: (a: any) => void }
 
 
         {address && (
-          <div className="grid gap-1 text-sm">
+          <div className="grid gap-1 text-sm text-gray-100 text-left">
             <div><b>CEP:</b> {address.cep}</div>
             <div><b>Logradouro:</b> {address.logradouro || '-'}</div>
             <div><b>Bairro:</b> {address.bairro || '-'}</div>
@@ -83,8 +90,13 @@ export default function CepForm({ onResolved }: { onResolved: (a: any) => void }
         )}
 
 
-        {!loading && !address && (
+        {!loading && !address && !error && (
           <p className="text-xs text-gray-500">Digite um CEP válido (8 dígitos) para consultar.</p>
+        )}
+
+        {error && !loading && (
+          <p className="text-md font-bold text-red-900">Erro ao consultar CEP</p>
+
         )}
         </div>
     </Card>)}

@@ -20,13 +20,13 @@ type Props = {
 };
 
 export default function WeatherIcon({
-                                      temp,
-                                      conditionText,
-                                      isNight = false,
-                                      precipProbability,
-                                      className,
-                                      size = 18,
-                                    }: Props) {
+    temp,
+    conditionText,
+    isNight = false,
+    precipProbability,
+    className,
+    size = 18,
+  }: Props) {
   const text = (conditionText || "").toLowerCase();
 
   const isSnow =

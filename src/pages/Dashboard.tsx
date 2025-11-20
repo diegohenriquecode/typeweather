@@ -60,7 +60,7 @@ export default function Dashboard() {
         </div>
 
         <div className="w-full md:max-w-2xl">
-          <HeroSearch onResolved={handleResolved} variant="compact" />
+          <HeroSearch onResolved={handleResolved} />
         </div>
       </div>
 

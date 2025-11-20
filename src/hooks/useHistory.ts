@@ -1,13 +1,23 @@
-import { useCallback, useMemo } from 'react';
-import { loadHistory, saveHistory, HistoryItem } from '@/utils/storage';
+// src/hooks/useHistory.ts
+import { useCallback, useMemo, useState } from "react";
+import { addToHistory, clearHistory, loadHistory, HistoryItem } from "@/utils/storage";
 
+export function useHistory(limit = 10) {
+  const [items, setItems] = useState<HistoryItem[]>(() => loadHistory(limit));
 
-export function useHistory() {
-  const items = useMemo(() => loadHistory(), []);
-  const add = useCallback((item: HistoryItem) => {
-    const next = [item, ...loadHistory()].slice(0, 10);
-    saveHistory(next);
+  const add = useCallback(
+    (item: Omit<HistoryItem, "ts"> & { ts?: number }) => {
+      const next = addToHistory(item, limit);
+      setItems(next.slice(0, limit));
+    },
+    [limit]
+  );
+
+  const clear = useCallback(() => {
+    clearHistory();
+    setItems([]);
   }, []);
-  const clear = useCallback(() => saveHistory([]), []);
-  return { items, add, clear };
+
+  const all = useMemo(() => items, [items]);
+  return { items: all, add, clear };
 }

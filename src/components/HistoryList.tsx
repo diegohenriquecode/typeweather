@@ -12,8 +12,8 @@ export default function HistoryList({ onPick }: { onPick: (h: ReturnType<typeof 
         {items.map((h, i) => (
           <li key={i} className="flex items-center justify-between py-2">
             <div>
-              <div className="text-sm font-medium">{h.cep} — {h.cityUF}</div>
-              <div className="text-xs text-gray-500">{new Date(h.timestamp).toLocaleString()}</div>
+              <div className="text-sm font-medium">{h.cep} — {h.uf}</div>
+              <div className="text-xs text-gray-500">{new Date(h.ts).toLocaleString()}</div>
             </div>
             <button className="rounded-xl border border-black/5 bg-white px-3 py-1 text-sm shadow hover:bg-gray-50 dark:bg-gray-800 dark:border-white/10 dark:hover:bg-gray-700" onClick={() => onPick(h)}>Recarregar</button>
           </li>
